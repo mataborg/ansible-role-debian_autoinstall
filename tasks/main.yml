@@ -8,6 +8,6 @@
 - name: Generate the ISO
   include_tasks: generate_iso.yml
 
-- name: Upload the ISO to the KVM
-  include_tasks: upload_kvm.yml
-  when: enable_pikvm | default(False)
+- #name: Upload the ISO to the KVM
+  #include_tasks: upload_kvm.yml
+  #when: enable_pikvm | default(False)

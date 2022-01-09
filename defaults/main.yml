@@ -7,23 +7,23 @@ iso_arch: "amd64"
 
 keyboard_layout: "us"
 
-hostname: "focal-autoinstall"
+hostname: "debian-autoinstall"
 
-password: "ubuntu"
+password: "debian"
 
-username: "ubuntu"
+username: "debian"
 
 ssh_public_key: ""
 
-pikvm_address: "pikvm.box"
+pikvm_address: ""
 
 pikvm_username: "admin"
 
 pikvm_password: "admin"
 
-target_dir: "{{ ansible_env.HOME }}/.local/ansible_ubuntu-autoinstall"
+target_dir: "{{ ansible_env.HOME }}/.local/ansible_debian-autoinstall"
 
-ubuntu_gpg_key: 843938DF228D22F7B3742BC0D94AA3F0EFE21092
+boot_drive_serial:  "SABRENT_SABRENT_DB9876543214E"
 
 grub_escape_seq: \\\
 

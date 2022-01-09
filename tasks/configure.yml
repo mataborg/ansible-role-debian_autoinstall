@@ -7,25 +7,12 @@
       - xorriso
       - gpg
       - curl
+      - netstat
     state: present
   with_items:
     - p7zip-full
     - xorriso
     - gpg
     - curl
+    - netstat
   when: ansible_os_family != "Darwin"
-
-- name: Install dependencies (macOS)
-  package:
-    name: 
-      - p7zip
-      - xorriso
-      - gnupg
-      - curl
-    state: present
-  when: ansible_os_family == "Darwin"
-
-- name: Create the temporary directory
-  file:
-    path: "{{ target_dir }}"
-    state: directory
