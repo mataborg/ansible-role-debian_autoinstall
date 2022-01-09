@@ -1,3 +1,5 @@
+This repo is a fork of notthebee's ansible playbook to automatically generate and deploy an Ubuntu server image to a remote computer.
+
 # Ansible Role: Debian Autoinstall
 
 ### This role will:
