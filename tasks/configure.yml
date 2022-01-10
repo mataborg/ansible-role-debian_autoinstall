@@ -1,18 +1,12 @@
 ---
-- name: Install dependencies
+- hosts: local
   become: yes
-  package:
-    name:
-      - p7zip-full
-      - xorriso
-      - gpg
-      - curl
-      - netstat
-    state: present
-  with_items:
-    - p7zip-full
-    - xorriso
-    - gpg
-    - curl
-    - netstat
-  when: ansible_os_family != "Darwin"
+  tasks:
+    - name: Install dependencies on local system
+      apt:
+        name:
+          - p7zip-full
+          - xorriso
+          - gpg
+          - curl
+          - net-tools

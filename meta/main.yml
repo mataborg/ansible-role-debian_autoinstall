@@ -3,7 +3,7 @@ galaxy_info:
   role_name: debian_autoinstall
   author: mataborg
   description: Generates a Debian Server ISO with a user-data template and optionally deploys it to PiKVM
-  issue_tracker_url: https://github.com/mataborg/ansible-role-cloud-init/issues
+  issue_tracker_url: https://github.com/mataborg/ansible-role-debian_autoinstall/issues
   license: 
   min_ansible_version: 2.4
   platforms:

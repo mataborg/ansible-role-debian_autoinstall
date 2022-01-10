@@ -1,0 +1,10 @@
+---
+- hosts: local
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Update packages
+      apt:
+        state: latest
+        update_cache: yes
+        upgrade: 'yes'
