@@ -8,3 +8,8 @@
     - gpg
     - curl
     - net-tools
+
+- name: Configure and install non-apt packages
+  become: yes
+  shell:
+    cmd: "python3 -m pip install --upgrade pip && pip3 install --upgrade psutil"

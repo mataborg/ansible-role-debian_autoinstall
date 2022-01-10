@@ -29,7 +29,6 @@
     replace: " autoinstall   ds=nocloud\\;s=/cdrom/nocloud/  ---"
   with_items:
     - "{{ target_dir }}/iso/boot/grub/grub.cfg"
-#    - "{{ target_dir }}/iso/boot/grub/loopback.cfg"
 
 - name: Create the nocloud directory
   file:
@@ -54,7 +53,6 @@
     checksum_algorithm: md5
   with_items:
     - "{{ target_dir }}/iso/boot/grub/grub.cfg"
-#    - "{{ target_dir }}/iso/boot/grub/loopback.cfg"
     - "{{ target_dir }}/iso/isolinux/txt.cfg"
   register: md5sums
 
@@ -64,15 +62,9 @@
     search_string: /boot/grub/grub.cfg
     path: "{{ target_dir }}/iso/md5sum.txt"
 
-#- name: Write the new MD5 hash (loopback.cfg)
-#  lineinfile:
-#    line: "{{ md5sums.results[1].stat.checksum }}  ./boot/grub/loopback.cfg"
-#    search_string: loopback.cfg
-#    path: "{{ target_dir }}/iso/md5sum.txt"
-
 - name: Write the new MD5 hash (isolinux/txt.cfg)
   lineinfile:
-    line: "{{ md5sums.results[2].stat.checksum }}  ./isolinux/txt.cfg"
+    line: "{{ md5sums.results[1].stat.checksum }}  ./isolinux/txt.cfg"
     search_string: isolinux/txt.cfg
     path: "{{ target_dir }}/iso/md5sum.txt"
   when: iso_arch == 'amd64'
