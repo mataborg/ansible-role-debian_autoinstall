@@ -1,12 +1,10 @@
 ---
-- hosts: local
+- name: Configure the target system and install dependencies
   become: yes
-  tasks:
-    - name: Install dependencies on local system
-      apt:
-        name:
-          - p7zip-full
-          - xorriso
-          - gpg
-          - curl
-          - net-tools
+  apt:
+    pkg:
+    - p7zip-full
+    - xorriso
+    - gpg
+    - curl
+    - net-tools
