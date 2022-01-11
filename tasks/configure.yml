@@ -13,3 +13,12 @@
   become: yes
   shell:
     cmd: "python3 -m pip install --upgrade pip && pip3 install --upgrade psutil"
+
+- name: Update apt packages
+  become: yes
+  apt:
+    state: latest
+    update_cache: yes
+    upgrade: yes
+    autoclean: yes
+    autoremove: yes
