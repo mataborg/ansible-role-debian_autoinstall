@@ -5,7 +5,6 @@
     pkg:
     - p7zip-full
     - xorriso
-    - gpg
     - curl
     - net-tools
 
