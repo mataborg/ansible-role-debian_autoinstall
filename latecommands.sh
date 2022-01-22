@@ -6,3 +6,4 @@ echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bullseye pve-no-su
 wget https://enterprise.proxmox.com/debian/proxmox-release-bullseye.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bullseye.gpg
 apt install proxmox-ve postfix open-iscsi -y
 apt remove os-prober -y
+update-grub
