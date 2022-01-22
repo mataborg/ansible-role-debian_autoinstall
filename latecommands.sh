@@ -8,3 +8,4 @@ apt remove os-prober -y
 apt remove linux-image-amd64 'linux-image-5.10*' -y
 apt autoremove -y
 apt clean
+update-grub
