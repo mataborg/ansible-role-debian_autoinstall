@@ -3,8 +3,8 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
 # Ansible Role: Debian Autoinstall
 
 ### This role will:
-* Download and verify (SHA256) the newest Debian netinst ISO
-* Unpack the ISO and integrate the user-data file for semi-automated installation
+* Download and verify (SHA256) the specified Debian netinst ISO
+* Unpack the ISO and integrate the preseed file for automated installation
 * Repack the ISO and (optionally) upload it to [PiKVM](https://pikvm.org/) for futher installation
 
 ### Special thanks to:
@@ -18,7 +18,7 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
   become: no
 
   roles:
-    - role: mataborg.ubuntu_autoinstall
+    - role: debian_autoinstall
 ```
 
 ### Variables
