@@ -2,9 +2,12 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
 
 # Ansible Role: Debian Autoinstall
 
+### WARNING
+* This role will WIPE the first disk available during the installation process, proceed with caution.
+
 ### This role will:
-* Download and verify (SHA256) the specified Debian netinst ISO
-* Unpack the ISO and integrate the preseed file for automated installation
+* Download and verify (SHA256) the specified Debian netinst server edition ISO
+* Unpack the ISO and integrate preseeding for automated installation of a Debian to ProxMox PVE
 * Repack the ISO and (optionally) upload it to [PiKVM](https://pikvm.org/) for futher installation
 
 ### Special thanks to:
@@ -28,3 +31,12 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
 
 
 Other variables are more or less self-explanatory and can be found in defaults/main.yml
+
+### Usage:
+```
+git clone https://github.com/mataborg/ansible-role-debian_autoinstall.git /home/eagle/.ansible/roles/
+```
+Modify the preseed.cfg and latecommands.sh to tailor the install for your personal environment.
+```
+ansible-playbook .ansible/playbooks/debian_autoinstall.yml --ask-become-pass
+```
