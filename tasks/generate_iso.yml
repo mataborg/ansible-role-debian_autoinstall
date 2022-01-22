@@ -8,29 +8,28 @@
   shell:
     cmd: "7z -y x {{ target_dir }}/debian-server-{{ iso_arch }}.iso -o{{ target_dir }}/iso"
 
-# - name: Add preseed file to initrd directory
-#   shell:
-#     cmd: "cp {{ target_dir }}/preseed.cfg {{ target_dir }}/iso/"
+- name: Add preseed file to ISO
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.ansible/roles/debian_autoinstall/preseed.cfg"
+    dest: "{{ target_dir }}/iso/"
 
-- name: Add preseed file to initrd 1/5
+- name: Pass autoinstall flag to installer
   shell:
-    cmd: "chmod +w -R {{ target_dir }}/iso/install.amd/"
+    cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
 
-- name: Add preseed file to initrd 2/5
+- name: Pass preseed.cfg to autoinstaller
+  ansible.builtin.lineinfile:
+    dest: "{{ target_dir }}/iso/isolinux/adtxt.cfg"
+    regexp: "^(.*)append auto=true(.*)$"
+    line: "{{'\t'}}append auto=true priority=critical vga=788 file=/cdrom/preseed.cfg initrd=/install.amd/initrd.gz --- quiet "
+
+- name: Modify timeouts 1/2
   shell:
-    cmd: "gunzip {{ target_dir }}/iso/install.amd/initrd.gz"
+    cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
 
-- name: Add preseed file to initrd 3/5
+- name: Modify timeouts 2/2
   shell:
-    cmd: "echo {{ target_dir }}/preseed.cfg | cpio -H newc -o -A -F  {{ target_dir }}/iso/install.amd/initrd"
-
-- name: Add preseed file to initrd 4/5
-  shell:
-    cmd: "gzip {{ target_dir }}/iso/install.amd/initrd"
-
-- name: Add preseed file to initrd 5/5 
-  shell: 
-    cmd: "chmod -w -R {{ target_dir }}/iso/install.amd/"
+    cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/prompt.cfg"
 
 - name: Update MD5 Hash 1/3 
   shell: 
@@ -38,7 +37,7 @@
 
 - name: Update MD5 Hash 2/3 
   shell: 
-    cmd: "find -follow -type f ! -name {{ target_dir }}/iso/md5sum.txt -print0 | xargs -0 md5sum > {{ target_dir }}/iso/md5sum.txt"
+    cmd: "find '.' -follow -type f ! -name {{ target_dir }}/iso/md5sum.txt -print0 | xargs -0 md5sum | tee {{ target_dir }}/iso/md5sum.txt"
 
 - name: Update MD5 Hash 3/3  
   shell: 
@@ -53,21 +52,21 @@
     cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -r -V debian-autoinstall_{{ iso_arch }} -J -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -no-emul-boot -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_autoinstall_{{ iso_arch }}.iso ."
   when: iso_arch == 'amd64'
 
-# - name: Repack the ISO (arm64)
-#   shell:
-#     cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -r -V debian-autoinstall_{{ iso_arch }} -J -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -no-emul-boot -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_autoinstall_{{ iso_arch }}.iso ."
-#   when: iso_arch == 'arm64'
+- name: Repack the ISO (arm64)
+  shell:
+    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -r -V debian-autoinstall_{{ iso_arch }} -J -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -no-emul-boot -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_autoinstall_{{ iso_arch }}.iso ."
+  when: iso_arch == 'arm64'
 
 - name: Make {{ target_dir }} writable
   shell:
     cmd: "chmod +w -R {{ target_dir }}/iso/"
 
-# - name: Clean up
-#   file:
-#     path: "{{ item }}"
-#     state: absent
-#   with_items: 
-#     - "{{ target_dir }}/iso"
+- name: Clean up
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: 
+    - "{{ target_dir }}/iso"
 
 - name: Done!
   debug:
