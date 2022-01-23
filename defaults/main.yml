@@ -1,17 +1,7 @@
 ---
-locale: "en-us.UTF-8"
-
 iso_arch: "amd64"
 # Valid values are: amd64, arm64
 # ppc64el and s390x haven't been tested yet
-
-keyboard_layout: "us"
-
-hostname: "Eagle"
-
-password: "eagle"
-
-username: "eagle"
 
 ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDvtTCCpLXSylnj8k2Gl4jv6zc8rKkW5uIzJX4KO71epfVX02yp7OesNwf/RXfxDY0BW+iXbstefTS9z1o3+FLofvMuf0XEdVOf46T9Rdyovg7uEh/JY5REuTr6gyjKnzXp6v+SXlv4LnbvMjpPJReA3dCV1hOovMaP+IzTMhoqtT2nmEZhEKe9sBC3s0Bl6sZivKbvbwAPcpHQKpTvcQg7ZNwCnkbmRn7Nr8Jfi6ai9ue7ULXbBVP6+vmrOw2d1rH582iPp/Dm/1CwcZxniIuizhkfdP8SbOd/cU6RFSgnv2W8+d91b3eyJdKi59xR2afvv9v401Gb+oM0J9AquNat"
 
@@ -22,8 +12,6 @@ ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDvtTCCpLXSylnj8k2Gl4jv6zc8rKkW5uI
 #pikvm_password: "admin"
 
 target_dir: "{{ ansible_env.HOME }}/.local/ansible-debian_autoinstall"
-
-boot_drive_serial:  "SABRENT_SABRENT_DB9876543214E"
 
 grub_escape_seq: \\\
 

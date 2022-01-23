@@ -6,6 +6,7 @@
     - p7zip-full
     - xorriso
     - curl
+    - wget
     - net-tools
 
 - name: Configure and install non-apt packages
