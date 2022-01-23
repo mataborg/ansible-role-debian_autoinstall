@@ -3,11 +3,16 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
 # Ansible Role: Debian Autoinstall
 
 ### WARNING
-* This role will WIPE the first disk available during the installation process, proceed with caution.
+```
+This role will WIPE the first disk available during the installation process, proceed with caution.
+```
+
+### Caution
+* Piping to shell is a controversial topic, as it prevents you from reading code that is about to run on your system. Please note that the lastcommand.sh file commands may be directly appended to the preseed.cfg file if you prefer not to pipe to shell.
 
 ### This role will:
 * Download and verify (SHA256) the specified Debian netinst server edition ISO
-* Unpack the ISO and integrate preseeding for automated installation of a Debian to ProxMox PVE
+* Unpack the ISO and integrate preseeding for automated installation of a Debian environment to ProxMox PVE
 * Repack the ISO and (optionally) upload it to [PiKVM](https://pikvm.org/) for futher installation
 
 ### Special thanks to:
@@ -25,7 +30,6 @@ This repo is a fork of notthebee's ansible playbook to automatically generate an
 ```
 
 ### Variables
-* **boot_drive_serial** – the serial number of the drive where you want to install Ubuntu. You can find it out using `ls /dev/disk/by-id`. Make sure to omit the interface (e.g. **ata-** or **scsi-**).
 * **iso_arch** – Architecture of the output ISO file. `amd64` and `arm64` are supported
 
 
