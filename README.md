@@ -1,6 +1,6 @@
 This repo is a fork of notthebee's ansible playbook to automatically generate and deploy an Ubuntu server image to a remote computer.
 
-# Ansible Role: Debian Autoinstall
+# Ansible Role: ProxMox Autoinstall
 
 ### WARNING
 ```
@@ -26,7 +26,7 @@ This role will WIPE the first disk available during the installation process, pr
   become: no
 
   roles:
-    - role: debian_autoinstall
+    - role: proxmox_autoinstall
 ```
 
 ### Variables
@@ -38,8 +38,8 @@ Other variables are more or less self-explanatory and can be found in defaults/m
 
 ### Usage:
 ```
-git clone --depth 1 https://github.com/mataborg/ansible-role-debian_autoinstall.git /home/eagle/.ansible/roles/
+git clone --depth 1 https://github.com/mataborg/ansible-role-proxmox_autoinstall.git /home/eagle/.ansible/roles/
 ```
 ```
-ansible-playbook .ansible/playbooks/debian_autoinstall.yml --ask-become-pass
+ansible-playbook .ansible/playbooks/proxmox_autoinstall.yml --ask-become-pass
 ```

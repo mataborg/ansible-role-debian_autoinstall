@@ -21,7 +21,7 @@
   ansible.builtin.lineinfile:
     dest: "{{ target_dir }}/iso/isolinux/adtxt.cfg"
     regexp: "^(.*)append auto=true(.*)$"
-    line: "{{'\t'}}append auto=true priority=critical vga=788 url=https://raw.githubusercontent.com/mataborg/ansible-role-debian_autoinstall/main/preseed.cfg initrd=/install.amd/initrd.gz --- quiet "
+    line: "{{'\t'}}append auto=true priority=critical vga=788 url=https://raw.githubusercontent.com/mataborg/ansible-role-proxmox_autoinstall/main/preseed.cfg initrd=/install.amd/initrd.gz --- quiet "
 
 - name: Modify timeouts 1/2
   shell:

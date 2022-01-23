@@ -11,7 +11,7 @@ ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDvtTCCpLXSylnj8k2Gl4jv6zc8rKkW5uI
 
 #pikvm_password: "admin"
 
-target_dir: "{{ ansible_env.HOME }}/.local/ansible-debian_autoinstall"
+target_dir: "{{ ansible_env.HOME }}/.local/ansible-proxmox_autoinstall"
 
 grub_escape_seq: \\\
 
