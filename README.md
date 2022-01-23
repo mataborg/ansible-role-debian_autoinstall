@@ -34,9 +34,8 @@ Other variables are more or less self-explanatory and can be found in defaults/m
 
 ### Usage:
 ```
-git clone https://github.com/mataborg/ansible-role-debian_autoinstall.git /home/eagle/.ansible/roles/
+git clone --depth 1 https://github.com/mataborg/ansible-role-debian_autoinstall.git /home/eagle/.ansible/roles/
 ```
-Modify the preseed.cfg and latecommands.sh to tailor the install for your personal environment.
 ```
 ansible-playbook .ansible/playbooks/debian_autoinstall.yml --ask-become-pass
 ```
