@@ -1,0 +1,9 @@
+[Unit]
+Description=Install ProxMox-VE after system reboot in an attempt to avoid hosts issues
+Before=getty@tty1.service
+
+[Service]
+ExecStart=/root/firstboot.sh
+
+[Install]
+WantedBy=getty.target
