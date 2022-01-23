@@ -23,6 +23,8 @@ systemctl daemon-reload
 # Delete me
 rm -- "$0"
 
+reboot
+
 }
 
 firstboot
