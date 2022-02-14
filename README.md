@@ -1,3 +1,5 @@
+![GitHub](https://img.shields.io/github/license/mataborg/ansible-role-proxmox_autoinstall)
+
 This repo is a fork of notthebee's ansible playbook to automatically generate and deploy an Ubuntu server image to a remote computer.
 
 # Ansible Role: ProxMox Autoinstall
