@@ -68,7 +68,10 @@
     path: "{{ item }}"
     state: absent
   with_items: 
+    - "{{ target_dir }}/debian-server-{{ iso_arch }}.iso"
     - "{{ target_dir }}/iso"
+    - "{{ target_dir }}/mbr_template"
+    - "{{ target_dir }}/SHA256SUMS"
 
 - name: Done!
   debug:
