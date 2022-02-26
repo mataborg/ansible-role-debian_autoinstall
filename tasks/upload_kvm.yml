@@ -1,7 +1,7 @@
 ---  
 - name: Get the file size of the ISO
   stat:
-    path: "{{ target_dir }}/debian_pve_autoinstall.iso"
+    path: "{{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso"
   register: iso
 
 - name: Disconnect the current drive
@@ -17,7 +17,7 @@
 
 - name: Remove the previous ISO
   uri:
-    url: "http://{{ pikvm_address }}/api/msd/remove?image=debian_pve_autoinstall.iso"
+    url: "http://{{ pikvm_address }}/api/msd/remove?image=debian_pve_autoinstall_{{ iso_arch }}.iso"
     status_code: [ 400, 200 ]
     method: POST
     headers:
@@ -30,10 +30,10 @@
   shell:
     cmd: "curl --location --request POST '{{ pikvm_address }}/api/msd/write' --header 'X-KVMD-User: {{ pikvm_username }}' --header 'X-KVMD-Passwd: {{ pikvm_password }}' --form 'image=debian_pve_autoinstall.iso' --form 'size={{ iso.stat.size | int }}' --form 'data=@{{ target_dir }}/debian_pve_autoinstall.iso'"
 
-- name: Select the debian_pve_autoinstall ISO
+- name: Select the debian_pve_autoinstall_{{ iso_arch }} ISO
   uri:
     validate_certs: no
-    url: "http://{{ pikvm_address }}/api/msd/set_params?image=debian_pve_autoinstall.iso"
+    url: "http://{{ pikvm_address }}/api/msd/set_params?image=debian_pve_autoinstall_{{ iso_arch }}.iso"
     method: POST
     headers:
       X-KVMD-User: "{{ pikvm_username }}"

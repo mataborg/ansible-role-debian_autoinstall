@@ -51,12 +51,12 @@
 
 - name: Repack the ISO (amd64)
   shell:
-    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -r -V debian-autoinstall_{{ iso_arch }} -J -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -no-emul-boot -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
+    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian-autoinstall_{{ iso_arch }} -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -no-emul-boot -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
   when: iso_arch == 'amd64'
 
 - name: Repack the ISO (arm64)
   shell:
-    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -r -V debian-autoinstall_{{ iso_arch }} -J -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -no-emul-boot -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
+    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian-autoinstall_{{ iso_arch }} -J -joliet-long -no-emul-boot -e boot/grub/efi.img -partition_cyl_align all -append_partition 2 0xef boot/grub/efi.img -no-emul-boot -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
   when: iso_arch == 'arm64'
 
 - name: Make {{ target_dir }} writable
@@ -76,5 +76,3 @@
 - name: Done!
   debug:
     msg: "Done! The ISO file has been generated: {{target_dir}}/debian_pve_autoinstall_{{ iso_arch }}.iso"
-    
-  

@@ -32,7 +32,7 @@ This role will WIPE the first disk available during the installation process, pr
 ```
 
 ### Variables
-* **iso_arch** – Architecture of the output ISO file. `amd64` and `arm64` are supported
+* `iso_arch` – Architecture of the output ISO file. `amd64` and `arm64` are supported
 
 
 
