@@ -1,24 +1,13 @@
 ---
 - name: Configure the target system and install dependencies
   become: yes
-  apt:
-    pkg:
-    - p7zip-full
-    - xorriso
-    - curl
-    - wget
-    - net-tools
+  package:
+    name:
+      - xorriso
+      - curl
+    state: present
 
-- name: Configure and install non-apt packages
-  become: yes
-  shell:
-    cmd: "python3 -m pip install --upgrade pip && pip3 install --upgrade psutil"
-
-- name: Update apt packages
-  become: yes
-  apt:
-    state: latest
-    update_cache: yes
-    upgrade: yes
-    autoclean: yes
-    autoremove: yes
+- name: Create the temporary directory
+  file:
+    path: "{{ target_dir }}"
+    state: directory

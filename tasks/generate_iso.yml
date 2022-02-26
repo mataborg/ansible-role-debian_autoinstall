@@ -6,12 +6,14 @@
 
 - name: Extract the ISO
   shell:
-    cmd: "7z -y x {{ target_dir }}/debian-server-{{ iso_arch }}.iso -o{{ target_dir }}/iso"
+    cmd: "xorriso -osirrox on -indev {{ target_dir }}/debian-server-{{ iso_arch }}.iso -extract / {{ target_dir }}/iso"
 
-# - name: Add preseed file to ISO ## Keeping method for posterity ##
-#   ansible.builtin.copy:
-#     src: "{{ ansible_env.HOME }}/.ansible/roles/debian_autoinstall/preseed.cfg"
-#     dest: "{{ target_dir }}/iso/"
+- name: Fix extracted ISO mode
+  file:
+    path: "{{ target_dir }}/iso"
+    mode: "u+w"
+    recurse: yes
+    follow: no
 
 - name: Pass autoinstall flag to installer
   shell:
@@ -35,7 +37,7 @@
   shell: 
     cmd: "chmod +w {{ target_dir }}/iso/md5sum.txt"
 
-- name: Update MD5 Hash 2/3 
+- name: Update MD5 Hash 2/3 - write hashes
   shell: 
     cmd: "find '.' -follow -type f ! -name {{ target_dir }}/iso/md5sum.txt -print0 | xargs -0 md5sum | tee {{ target_dir }}/iso/md5sum.txt"
 

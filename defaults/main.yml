@@ -13,6 +13,4 @@ ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDvtTCCpLXSylnj8k2Gl4jv6zc8rKkW5uI
 
 target_dir: "{{ ansible_env.HOME }}/.local/ansible-proxmox_autoinstall"
 
-grub_escape_seq: \\\
-
 enable_pikvm: false
