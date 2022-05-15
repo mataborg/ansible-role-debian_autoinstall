@@ -1,7 +1,6 @@
 ---
 iso_arch: "amd64"
 # Valid values are: amd64, arm64
-# ppc64el and s390x haven't been tested yet
 
 # ssh_public_key: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDvtTCCpLXSylnj8k2Gl4jv6zc8rKkW5uIzJX4KO71epfVX02yp7OesNwf/RXfxDY0BW+iXbstefTS9z1o3+FLofvMuf0XEdVOf46T9Rdyovg7uEh/JY5REuTr6gyjKnzXp6v+SXlv4LnbvMjpPJReA3dCV1hOovMaP+IzTMhoqtT2nmEZhEKe9sBC3s0Bl6sZivKbvbwAPcpHQKpTvcQg7ZNwCnkbmRn7Nr8Jfi6ai9ue7ULXbBVP6+vmrOw2d1rH582iPp/Dm/1CwcZxniIuizhkfdP8SbOd/cU6RFSgnv2W8+d91b3eyJdKi59xR2afvv9v401Gb+oM0J9AquNat"
 
