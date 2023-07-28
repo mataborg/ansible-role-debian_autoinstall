@@ -16,6 +16,6 @@
 
 - name: Download the latest Debian netinst {{ iso_arch }} server ISO
   get_url:
-    url: "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.3.0-amd64-netinst.iso"
+    url: "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.1.0-amd64-netinst.iso"
     dest: "{{ target_dir }}/debian-server-{{ iso_arch }}.iso"
     checksum: "sha256:{{ sha256sum.stdout }}"
