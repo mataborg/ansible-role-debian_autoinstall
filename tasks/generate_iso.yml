@@ -15,15 +15,28 @@
     recurse: yes
     follow: no
 
-- name: Pass autoinstall flag to installer
-  shell:
-    cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
+- name: Download preseed.cfg
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/mataborg/ansible-role-proxmox_autoinstall/main/preseed.cfg
+    dest: "{{ target_dir }}"
 
-- name: Pass preseed.cfg to autoinstaller
-  ansible.builtin.lineinfile:
-    dest: "{{ target_dir }}/iso/isolinux/adtxt.cfg"
-    regexp: "^(.*)append auto=true(.*)$"
-    line: "{{'\t'}}append auto=true priority=critical vga=788 url=https://raw.githubusercontent.com/mataborg/ansible-role-proxmox_autoinstall/main/preseed.cfg initrd=/install.amd/initrd.gz --- quiet "
+- name: Extract initrd.gz 
+  ansible.builtin.unarchive:
+    src: "{{ target_dir }}/iso/install.amd/initrd.gz"
+    dest: "{{ target_dir }}/iso/install.amd/initrd"
+
+- name: Pass preseed.cfg to initrd.gz
+  shell:
+    cmd: "echo preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
+
+- name: Rezip initrd
+  community.general.archive:
+    path: "{{ target_dir }}/iso/install.amd/initrd"
+    remove: true
+
+# - name: Pass autoinstall flag to installer
+#   shell:
+#     cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
 
 - name: Modify timeouts 1/2
   shell:
