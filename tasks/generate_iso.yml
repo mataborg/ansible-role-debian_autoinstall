@@ -21,30 +21,28 @@
     dest: "{{ target_dir }}"
 
 - name: Extract initrd.gz 
-  ansible.builtin.unarchive:
-    src: "{{ target_dir }}/iso/install.amd/initrd.gz"
-    dest: "{{ target_dir }}/iso/install.amd/initrd"
+  shell:
+    cmd: "gunzip {{ target_dir }}/iso/install.amd/initrd"
 
 - name: Pass preseed.cfg to initrd.gz
   shell:
-    cmd: "echo preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
+    cmd: "echo {{ target_dir}}/preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
 
 - name: Rezip initrd
-  community.general.archive:
-    path: "{{ target_dir }}/iso/install.amd/initrd"
-    remove: true
+  shell:
+    cmd: "gzip {{ target_dir }}/iso/install.amd/initrd"
 
-# - name: Pass autoinstall flag to installer
+- name: Pass autoinstall flag to installer
+  shell:
+    cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
+
+# - name: Modify timeouts 1/2
 #   shell:
-#     cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
+#     cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
 
-- name: Modify timeouts 1/2
-  shell:
-    cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
-
-- name: Modify timeouts 2/2
-  shell:
-    cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/prompt.cfg"
+# - name: Modify timeouts 2/2
+#   shell:
+#     cmd: "sed -i 's/timeout 0/timeout 4/' {{ target_dir }}/iso/isolinux/prompt.cfg"
 
 - name: Update MD5 Hash 1/3 
   shell: 
@@ -67,10 +65,10 @@
     cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian_pve_autoinstall_{{ iso_arch }} -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -no-emul-boot -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
   when: iso_arch == 'amd64'
 
-- name: Repack the ISO (arm64)
-  shell:
-    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian_pve_autoinstall_{{ iso_arch }} -J -joliet-long -no-emul-boot -e boot/grub/efi.img -partition_cyl_align all -append_partition 2 0xef boot/grub/efi.img -no-emul-boot -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
-  when: iso_arch == 'arm64'
+# - name: Repack the ISO (arm64)
+#   shell:
+#     cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian_pve_autoinstall_{{ iso_arch }} -J -joliet-long -no-emul-boot -e boot/grub/efi.img -partition_cyl_align all -append_partition 2 0xef boot/grub/efi.img -no-emul-boot -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
+#   when: iso_arch == 'arm64'
 
 - name: Make {{ target_dir }} writable
   shell:
@@ -85,6 +83,7 @@
     - "{{ target_dir }}/iso"
     - "{{ target_dir }}/mbr_template"
     - "{{ target_dir }}/SHA256SUMS"
+    - "{{ target_dir }}/preseed.cfg"
 
 - name: Done!
   debug:
