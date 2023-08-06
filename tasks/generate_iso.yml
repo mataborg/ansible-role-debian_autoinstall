@@ -26,7 +26,7 @@
 
 - name: Pass preseed.cfg to initrd.gz
   shell:
-    cmd: "echo {{ target_dir}}/iso/preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
+    cmd: "echo {{ target_dir }}/iso/preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
 
 - name: Rezip initrd
   shell:
@@ -36,12 +36,17 @@
   shell:
     cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
 
-- name: Add preseed.cfg iso filepath to menu
+- name: Add preseed.cfg iso filepath to adtxt.cfg
   ansible.builtin.lineinfile:
-    path: "{{ target_dir }}/iso/isolinux/ad.txt"
-    regexp: '^quiet '
-    insertafter: '^quiet '
-    line: file=/cdrom/preseed.cfg
+    path: "{{ target_dir }}/iso/isolinux/adtxt.cfg"
+    search_string: '	append auto=true priority=critical vga=788 initrd=/install.amd/initrd.gz --- quiet '
+    line: '    append auto=true priority=critical vga=788 initrd=/install.amd/initrd.gz --- quiet file=/cdrom/preseed.cfg '
+
+- name: Add preseed.cfg iso filepath to txt.cfg
+  ansible.builtin.lineinfile:
+    path: "{{ target_dir }}/iso/isolinux/txt.cfg"
+    search_string: '	append vga=788 initrd=/install.amd/initrd.gz --- quiet '
+    line: '    append vga=788 initrd=/install.amd/initrd.gz --- quiet file=/cdrom/preseed.cfg '
 
 # - name: Modify timeouts 1/2
 #   shell:
@@ -81,15 +86,15 @@
   shell:
     cmd: "chmod +w -R {{ target_dir }}/iso/"
 
-- name: Clean up
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items: 
-    - "{{ target_dir }}/debian-server-{{ iso_arch }}.iso"
-    - "{{ target_dir }}/iso"
-    # - "{{ target_dir }}/mbr_template"
-    - "{{ target_dir }}/SHA256SUMS"
+# - name: Clean up
+#   file:
+#     path: "{{ item }}"
+#     state: absent
+#   with_items: 
+#     - "{{ target_dir }}/debian-server-{{ iso_arch }}.iso"
+#     - "{{ target_dir }}/iso"
+#     # - "{{ target_dir }}/mbr_template"
+#     - "{{ target_dir }}/SHA256SUMS"
 
 - name: Done!
   debug:
