@@ -5,6 +5,7 @@
     name:
       - xorriso
       - curl
+      - isolinux
     state: present
 
 - name: Create the temporary directory

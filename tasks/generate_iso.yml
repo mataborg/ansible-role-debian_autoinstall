@@ -18,7 +18,7 @@
 - name: Download preseed.cfg
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/mataborg/ansible-role-proxmox_autoinstall/main/preseed.cfg
-    dest: "{{ target_dir }}"
+    dest: "{{ target_dir }}/iso"
 
 - name: Extract initrd.gz 
   shell:
@@ -26,7 +26,7 @@
 
 - name: Pass preseed.cfg to initrd.gz
   shell:
-    cmd: "echo {{ target_dir}}/preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
+    cmd: "echo {{ target_dir}}/iso/preseed.cfg | cpio -H newc -o -A -F {{ target_dir }}/iso/install.amd/initrd"
 
 - name: Rezip initrd
   shell:
@@ -35,6 +35,13 @@
 - name: Pass autoinstall flag to installer
   shell:
     cmd: "sed -i 's/vesamenu.c32/auto/' {{ target_dir }}/iso/isolinux/isolinux.cfg"
+
+- name: Add preseed.cfg iso filepath to menu
+  ansible.builtin.lineinfile:
+    path: "{{ target_dir }}/iso/isolinux/ad.txt"
+    regexp: '^quiet '
+    insertafter: '^quiet '
+    line: file=/cdrom/preseed.cfg
 
 # - name: Modify timeouts 1/2
 #   shell:
@@ -56,13 +63,13 @@
   shell: 
     cmd: "chmod -w {{ target_dir }}/iso/md5sum.txt"
 
-- name: Save MBR
-  shell: 
-    cmd: "dd if=\"{{ target_dir }}/debian-server-{{ iso_arch }}.iso\" bs=1 count=432 of=\"{{ target_dir }}/mbr_template\""
+# - name: Save MBR
+#   shell: 
+#     cmd: "dd if=\"{{ target_dir }}/debian-server-{{ iso_arch }}.iso\" bs=1 count=432 of=\"{{ target_dir }}/mbr_template\""
 
 - name: Repack the ISO (amd64)
   shell:
-    cmd: "cd {{ target_dir }}/iso && xorriso -as mkisofs -quiet -r -V debian_pve_autoinstall_{{ iso_arch }} -J -joliet-long -cache-inodes -isohybrid-mbr {{ target_dir }}/mbr_template -b isolinux/isolinux.bin -no-emul-boot -c isolinux/boot.cat -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -isohybrid-apm-hfsplus -o {{ target_dir }}/debian_pve_autoinstall_{{ iso_arch }}.iso ."
+    cmd: "cd {{ target_dir }} &&  xorriso -as mkisofs -o debian_pve_autoinstall_{{ iso_arch }}.iso -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table iso"
   when: iso_arch == 'amd64'
 
 # - name: Repack the ISO (arm64)
@@ -81,9 +88,8 @@
   with_items: 
     - "{{ target_dir }}/debian-server-{{ iso_arch }}.iso"
     - "{{ target_dir }}/iso"
-    - "{{ target_dir }}/mbr_template"
+    # - "{{ target_dir }}/mbr_template"
     - "{{ target_dir }}/SHA256SUMS"
-    - "{{ target_dir }}/preseed.cfg"
 
 - name: Done!
   debug:
