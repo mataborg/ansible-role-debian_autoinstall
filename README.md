@@ -4,12 +4,12 @@
 
 This repo is a fork of notthebee's ansible playbook to automatically generate and deploy an Ubuntu server image to a remote computer.
 
-## WARNING
+## ⚠️ WARNING ⚠️
 ```
 This role will WIPE the first disk available during the installation process, proceed with caution.
 ```
 
-## Caution
+## 🚨 Caution 🚨
 * Piping to shell is a controversial topic, as it prevents you from reading code that is about to run on your system. Please note that the lastcommand.sh file commands may be directly appended to the preseed.cfg file if you prefer not to pipe to shell.
 
 ### This role will:
