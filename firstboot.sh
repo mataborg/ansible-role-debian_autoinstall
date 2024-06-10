@@ -6,8 +6,6 @@ firstboot() {
 
     # Install PVE/Remove shipped Debian Kernel
     sed -i 's/127.0.1.1/192.168.2.19/' /etc/hosts
-    # echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
-    # wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
     apt update
     apt full-upgrade -y
     apt install proxmox-ve -y

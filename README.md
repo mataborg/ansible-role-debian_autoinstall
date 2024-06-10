@@ -40,7 +40,7 @@ Other variables are more or less self-explanatory and can be found in defaults/m
 
 ### Usage:
 ```
-git clone --depth 1 https://github.com/mataborg/ansible-role-proxmox_autoinstall /home/eagle/.ansible/roles/proxmox_autoinstall
+git clone --depth 1 https://github.com/mataborg/ansible-role-proxmox_autoinstall ~/.ansible/roles/proxmox_autoinstall
 ```
 ```
 ansible-playbook .ansible/playbooks/proxmox_autoinstall.yml --ask-become-pass

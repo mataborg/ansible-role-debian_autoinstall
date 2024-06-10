@@ -11,7 +11,7 @@ latecommands() {
     echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
     wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
     apt update
-    apt install pve-kernel-6.2 -y
+    apt install proxmox-default-kernel -y
 
     # Download systemd component and PVE install script
     curl -sSL 'https://raw.githubusercontent.com/mataborg/ansible-role-debian_autoinstall/main/firstboot.sh' -o "/root/firstboot.sh"
